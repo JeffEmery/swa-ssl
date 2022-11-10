@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+# Debug Static Web App CLI /w Custom Host and HTTPS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **Static Web App does not handle proxying from HTTPS on port 4280 to the dev server running HTTPS on port 3000.**
 
-## Available Scripts
+See https://github.com/Azure/static-web-apps-cli/issues/600
 
-In the project directory, you can run:
+This is a basic Create React App setup with a custom hostname and HTTPS using a
+self signed certificate.
 
-### `npm start`
+The `.env` file configure CRA to start with HTTPS and the hostname. e.g.
+https://app.hostname.dev:3000
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`.env`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+HTTPS=true
+HOST=app.hostname.dev
+SSL_CRT_FILE=./ssl/dev-certificate.pem
+SSL_KEY_FILE=./ssl/dev-key.pem
+```
 
-### `npm test`
+- Copy a self-signed certificate and key to the `ssl` folder.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run `npm start` to prove that CRA works properly at
+https://app.hostname.dev:3000 with a valid certificate.
 
-### `npm run build`
+`swa.cli.config.json`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```json
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "swa-ssl": {
+      "appLocation": ".",
+      "outputLocation": "build",
+      "appBuildCommand": "npm run build",
+      "ssl": true,
+      "host": "app.hostname.dev",
+      "sslCert": "./ssl/dev-certificate.pem",
+      "sslKey": "./ssl/dev-key.pem",
+      "run": "npm start",
+      "appDevserverUrl": "https://app.hostname.dev:3000"
+    }
+  }
+}
+```
