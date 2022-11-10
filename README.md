@@ -4,6 +4,11 @@
 
 See https://github.com/Azure/static-web-apps-cli/issues/600
 
+`npm start` properly starts the app at https://app.hostname.dev:3000 with a
+valid certificate
+
+**_`swa start` starts but you cannot access https://app.hostname.dev:4280_**
+
 This is a basic Create React App setup with a custom hostname and HTTPS using a
 self signed certificate.
 
